@@ -119,15 +119,12 @@ public class Car {
             return 0;
         }
 
-        if(mode == DriveModeEnum.Normal){
-            car.mode = new NormalMode(car);
-            if(!car.mode.isLegal()){
-                this.mode = oldMode;
-                return -1;
-            }
-            return 0;
+        car.mode = new NormalMode(car);
+        if(!car.mode.isLegal()){
+            this.mode = oldMode;
+            return -1;
         }
-        return -1; //UNREACHABLE CODE
+        return 0;
     }
     
     /**

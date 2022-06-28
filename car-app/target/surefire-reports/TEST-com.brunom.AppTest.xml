@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.brunom.AppTest" time="0.059" tests="20" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.brunom.AppTest" time="0.053" tests="20" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IT"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17\bin"/>
-    <property name="sun.java.command" value="C:\Users\PC\AppData\Local\Temp\surefire5684941732053901945\surefirebooter17662710784244883428.jar C:\Users\PC\AppData\Local\Temp\surefire5684941732053901945 2022-06-28T23-38-55_787-jvmRun1 surefire7582480132849628610tmp surefire_06334937483694746541tmp"/>
+    <property name="sun.java.command" value="C:\Users\PC\AppData\Local\Temp\surefire6229731734509171150\surefirebooter4837574374212873677.jar C:\Users\PC\AppData\Local\Temp\surefire6229731734509171150 2022-06-29T00-13-09_933-jvmRun1 surefire8340363867887837755tmp surefire_07803803979254463377tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="F:\Università\Secondo anno\Ingegneria del Software\Progetto\car-app\target\test-classes;F:\Università\Secondo anno\Ingegneria del Software\Progetto\car-app\target\classes;C:\Users\PC\.m2\repository\org\mockito\mockito-core\3.3.3\mockito-core-3.3.3.jar;C:\Users\PC\.m2\repository\net\bytebuddy\byte-buddy\1.10.5\byte-buddy-1.10.5.jar;C:\Users\PC\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.5\byte-buddy-agent-1.10.5.jar;C:\Users\PC\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\PC\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\PC\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\PC\AppData\Local\Temp\surefire5684941732053901945\surefirebooter17662710784244883428.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\PC\AppData\Local\Temp\surefire6229731734509171150\surefirebooter4837574374212873677.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17+35-LTS-2724"/>
@@ -62,7 +62,7 @@
   <testcase name="shouldToggleEngine" classname="com.brunom.AppTest" time="0"/>
   <testcase name="shouldNotRemovePassenger" classname="com.brunom.AppTest" time="0.001"/>
   <testcase name="testCanAccelerate" classname="com.brunom.AppTest" time="0"/>
-  <testcase name="testPrintState" classname="com.brunom.AppTest" time="0.006"/>
+  <testcase name="testPrintState" classname="com.brunom.AppTest" time="0.005"/>
   <testcase name="testBraking" classname="com.brunom.AppTest" time="0"/>
   <testcase name="shouldRemovePassenger" classname="com.brunom.AppTest" time="0"/>
   <testcase name="testModeAcceleration" classname="com.brunom.AppTest" time="0"/>

@@ -19,7 +19,7 @@ public abstract class DriveMode {
     public abstract void accelerate(double acceleration, double amount);
     /**
      * Defines if the current drive mode is legal or not for the current car state (for example SportMode is illegal when there are more than one passenger).
-     * @return
+     * @return if the current drive mode is legal or not for the current car state (for example SportMode is illegal when there are more than one passenger).
      */
     public abstract boolean isLegal();
 }
