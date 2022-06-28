@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DriveMode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">car-app</a> &gt; <a href="index.source.html" class="el_package">com.brunom</a> &gt; <span class="el_source">DriveMode.java</span></div><h1>DriveMode.java</h1><pre class="source lang-java linenums">package com.brunom;
+/**
+ * An abstract class that represents a generic drive mode.
+ */
+public abstract class DriveMode {
+    protected Car car;
+    public double force;
+    public double maxSpeed;
+
+<span class="fc" id="L10">    public DriveMode(Car car){</span>
+<span class="fc" id="L11">        this.car = car;</span>
+<span class="fc" id="L12">    }</span>
+
+    /**
+     * Accelerates the car consuming fuel and/or battery depending on the drive mode. If the car runs out of fuel, it turns the engine off.
+     * @param acceleration the acceleration.
+     * @param amount a factor between 0.0 and 1.0
+     */
+    public abstract void accelerate(double acceleration, double amount);
+    /**
+     * Defines if the current drive mode is legal or not for the current car state (for example SportMode is illegal when there are more than one passenger).
+     * @return
+     */
+    public abstract boolean isLegal();
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

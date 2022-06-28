@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimulationManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">car-app</a> &gt; <a href="index.source.html" class="el_package">com.brunom</a> &gt; <span class="el_source">SimulationManager.java</span></div><h1>SimulationManager.java</h1><pre class="source lang-java linenums">package com.brunom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+import java.text.DecimalFormat;
+
+<span class="nc" id="L8">public class SimulationManager{</span>
+<span class="fc" id="L9">    static DecimalFormat df = new DecimalFormat();</span>
+    public static void main(){
+<span class="nc" id="L11">        Car car = Car.getInstance();</span>
+<span class="nc" id="L12">        Scanner input = new Scanner(System.in);</span>
+        String ans;
+<span class="nc" id="L14">        ArrayList&lt;Passenger&gt; passengers = new ArrayList&lt;&gt;(</span>
+<span class="nc" id="L15">            Arrays.asList(</span>
+<span class="nc" id="L16">                new Passenger(&quot;Giorgio&quot;,59),</span>
+<span class="nc" id="L17">                new Passenger(&quot;Luca&quot;,70),</span>
+<span class="nc" id="L18">                new Passenger(&quot;Andrea&quot;,57),</span>
+<span class="nc" id="L19">                new Passenger(&quot;Lucia&quot;,50),</span>
+<span class="nc" id="L20">                new Passenger(&quot;Damiano&quot;,78)</span>
+            )
+        );
+
+<span class="nc" id="L24">        ArrayList&lt;String&gt; driveModeDescriptions = new ArrayList&lt;&gt;(</span>
+<span class="nc" id="L25">            Arrays.asList(</span>
+<span class="nc" id="L26">                &quot;Good for urban driving. Allows to reach the maximum speed of 50 Km/h.&quot;,</span>
+<span class="nc" id="L27">                &quot;For everyday driving. Allows to reach the maximum speed of 120 Km/h.&quot;,</span>
+<span class="nc" id="L28">                &quot;Consumes battery and a few fuel. When the speed is above 90 Km/h or the battery is under 10% it automatically switches to Normal mode.&quot;,</span>
+<span class="nc" id="L29">                &quot;For high speed driving. Allows to reach the maximum speed of 200 Km/h. Possible when there is only one passenger.&quot;</span>
+            )
+        );
+
+        
+<span class="nc" id="L34">        while(true){</span>
+<span class="nc" id="L35">            clearScreen();</span>
+<span class="nc" id="L36">            System.out.println(&quot;-------- Main Menu --------\n0: Print car state\n1: Print available passengers\n2: Add a passenger\n3: Remove a passenger\n4: Passenger Editor\n5: Select drive mode\n6: Toggle engine\n7: Give gas\n8: Brake\n9: Gas Station\n10: Reset car state.\n---------------------------&quot;);</span>
+<span class="nc" id="L37">            ans = input.nextLine();</span>
+
+<span class="nc" id="L39">            System.out.println(&quot;&quot;);</span>
+<span class="nc bnc" id="L40" title="All 12 branches missed.">            switch(ans){</span>
+                case &quot;0&quot;:
+<span class="nc" id="L42">                    clearScreen();</span>
+<span class="nc" id="L43">                    car.printState();</span>
+<span class="nc" id="L44">                    break;</span>
+                case &quot;1&quot;:
+<span class="nc" id="L46">                    clearScreen();</span>
+<span class="nc" id="L47">                    printPassengers(car, passengers, true);</span>
+<span class="nc" id="L48">                    System.out.println(&quot;&quot;);</span>
+<span class="nc" id="L49">                    break;</span>
+                case &quot;2&quot;:
+<span class="nc" id="L51">                    InputPassengerAdd(input, car, passengers);</span>
+<span class="nc" id="L52">                    break;</span>
+                case &quot;3&quot;:
+<span class="nc" id="L54">                    InputPassengerRemove(input, car);</span>
+<span class="nc" id="L55">                    break;</span>
+                case &quot;4&quot;:
+<span class="nc" id="L57">                    PassengerEditor(input, car, passengers);</span>
+<span class="nc" id="L58">                    break;</span>
+                case &quot;5&quot;:
+<span class="nc" id="L60">                    inputDriveMode(input, car, driveModeDescriptions);</span>
+<span class="nc" id="L61">                    break;</span>
+                case &quot;6&quot;:
+<span class="nc" id="L63">                    int s = car.toggleEngine();</span>
+<span class="nc bnc" id="L64" title="All 4 branches missed.">                    switch(s){</span>
+                        case -1:
+<span class="nc" id="L66">                            System.out.println(&quot;Cannot toggle engine if there is not any passenger!&quot;);</span>
+<span class="nc" id="L67">                            break;</span>
+                        case -2:
+<span class="nc" id="L69">                            System.out.println(&quot;You are out of fuel! Use the '9' option to refuel.&quot;);</span>
+<span class="nc" id="L70">                            break;</span>
+                        case 0:
+<span class="nc bnc" id="L72" title="All 2 branches missed.">                            System.out.println(car.engine? &quot;Engine turned on.&quot; : &quot;Engine turned off.&quot;);</span>
+                            break;
+                    }
+<span class="nc" id="L75">                    break;</span>
+                case &quot;7&quot;:
+<span class="nc" id="L77">                    InputAccelerate(input, car);</span>
+<span class="nc" id="L78">                    break;</span>
+                case &quot;8&quot;:
+<span class="nc bnc" id="L80" title="All 2 branches missed.">                    if(car.passengers.size() == 0){</span>
+<span class="nc" id="L81">                        System.out.println(&quot;Cannot brake: there are no passengers!&quot;);</span>
+<span class="nc" id="L82">                        break;</span>
+                    }
+<span class="nc" id="L84">                    clearScreen();</span>
+<span class="nc" id="L85">                    car.brake();</span>
+<span class="nc" id="L86">                    System.out.println(&quot;Braking... Current speed: &quot; + formatDouble(car.speed, 5) + &quot; Km/h&quot;);</span>
+<span class="nc" id="L87">                    break;</span>
+                case &quot;9&quot;:
+<span class="nc" id="L89">                    GasStation(input, car);</span>
+<span class="nc" id="L90">                    break;</span>
+                case &quot;10&quot;:
+<span class="nc" id="L92">                    car.resetState();</span>
+<span class="nc" id="L93">                    System.out.println(&quot;Car state reset.&quot;);</span>
+<span class="nc" id="L94">                    break;</span>
+
+                default:
+<span class="nc" id="L97">                    System.out.println(&quot;Unknown option.&quot;);</span>
+            }
+<span class="nc" id="L99">            System.out.println(&quot;Press ENTER to continue.&quot;);</span>
+<span class="nc" id="L100">            input.nextLine();</span>
+        }
+    }
+
+    public static String formatDouble(double d, int digits){
+<span class="fc" id="L105">        df.setMaximumFractionDigits(digits);</span>
+<span class="fc" id="L106">        String res = df.format(d).replace(',','.');</span>
+<span class="fc" id="L107">        return res;</span>
+    }
+
+    private static void clearScreen() {
+<span class="nc" id="L111">        System.out.print(&quot;\033[H\033[2J&quot;);</span>
+<span class="nc" id="L112">        System.out.flush();</span>
+<span class="nc" id="L113">    }</span>
+
+    public static void printPassengers(Car car, ArrayList&lt;Passenger&gt; passengers, boolean availableOnly){
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        System.out.println(availableOnly? &quot;--- Available Passengers ---&quot; : &quot;--- Passengers ---&quot;);</span>
+<span class="nc" id="L117">        int n = 0;</span>
+
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        for(int i = 0; i &lt; passengers.size(); i++){</span>
+<span class="nc bnc" id="L120" title="All 4 branches missed.">            if(availableOnly &amp;&amp; car.passengers.contains(passengers.get(i)))</span>
+<span class="nc" id="L121">                continue;</span>
+<span class="nc" id="L122">            n++;</span>
+<span class="nc" id="L123">            System.out.println((i + 1) + &quot;: &quot; + passengers.get(i).name + &quot;, &quot; + passengers.get(i).weight + &quot; Kg&quot;);</span>
+        }
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if(n == 0){</span>
+<span class="nc" id="L126">            System.out.println(&quot;Empty&quot;);</span>
+        }
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        System.out.println(availableOnly? &quot;----------------------------&quot; : &quot;------------------&quot;);</span>
+<span class="nc" id="L129">    }</span>
+
+    public static void InputPassengerAdd(Scanner input, Car car, ArrayList&lt;Passenger&gt; passengers){
+<span class="nc" id="L132">        int availablePassengers = 0;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        for(Passenger p : passengers){</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if(!car.passengers.contains(p)) availablePassengers++;</span>
+        }
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if(availablePassengers == 0){</span>
+<span class="nc" id="L137">            System.out.println(&quot;There are no available passengers!&quot;);</span>
+<span class="nc" id="L138">            return;</span>
+        }
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if(car.isFull()){</span>
+<span class="nc" id="L141">            System.out.println(&quot;The car is full!&quot;);</span>
+<span class="nc" id="L142">            return;</span>
+        }
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if(car.speed != 0){</span>
+<span class="nc" id="L145">            System.out.println(&quot;You cannot add passengers while the car is moving!&quot;);</span>
+<span class="nc" id="L146">            return; </span>
+        }
+<span class="nc" id="L148">        clearScreen();</span>
+<span class="nc" id="L149">        printPassengers(car, passengers, true);</span>
+<span class="nc" id="L150">        System.out.println((passengers.size() + 1) + &quot;: Back to Main Menu\n&quot;);</span>
+<span class="nc" id="L151">        System.out.println(&quot;Select a passenger to add.&quot;);</span>
+<span class="nc" id="L152">        String ans = input.nextLine();</span>
+<span class="nc" id="L153">        int p = 0;</span>
+        try{
+<span class="nc" id="L155">            p = Integer.parseInt(ans);</span>
+<span class="nc" id="L156">        }</span>
+<span class="nc" id="L157">        catch(NumberFormatException e){</span>
+<span class="nc" id="L158">            message(input, &quot;\nPlease enter a valid number.&quot;);</span>
+<span class="nc" id="L159">            InputPassengerAdd(input, car, passengers);</span>
+<span class="nc" id="L160">            return;</span>
+        }
+<span class="nc" id="L162">        System.out.println(&quot;&quot;);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if(p == passengers.size() + 1){</span>
+<span class="nc" id="L164">            System.out.println(&quot;Operation canceled.&quot;);</span>
+<span class="nc" id="L165">            return;</span>
+        }
+
+        try{
+<span class="nc" id="L169">            int s = car.addPassenger(passengers.get(p-1));</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            if(s == -3){</span>
+<span class="nc" id="L171">                message(input, &quot;Please select a passenger that is not already in the car!&quot;);</span>
+<span class="nc" id="L172">                InputPassengerAdd(input, car, passengers);</span>
+<span class="nc" id="L173">                return;</span>
+            }
+            else{
+<span class="nc" id="L176">                System.out.println(&quot;Passenger &quot; + passengers.get(p-1).name + &quot; added successfully.&quot;);</span>
+            }    
+<span class="nc" id="L178">        }</span>
+<span class="nc" id="L179">        catch(IndexOutOfBoundsException e){</span>
+<span class="nc" id="L180">            message(input, &quot;Please enter a valid number.&quot;);</span>
+<span class="nc" id="L181">            InputPassengerAdd(input, car, passengers);</span>
+        }
+<span class="nc" id="L183">        catch(IllegalStateException e){</span>
+<span class="nc" id="L184">            car.passengers.remove(passengers.get(p-1));</span>
+<span class="nc" id="L185">            System.out.println(e.getMessage());</span>
+        }
+<span class="nc" id="L187">    }</span>
+
+    public static void InputPassengerRemove(Scanner input, Car car){
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        if(car.passengers.size() == 0){</span>
+<span class="nc" id="L191">            System.out.println(&quot;There are no passengers!&quot;);</span>
+<span class="nc" id="L192">            return;</span>
+        }
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if(car.speed != 0.0d){</span>
+<span class="nc" id="L195">            System.out.println(&quot;You cannot remove passengers while the car is moving!\n&quot;);</span>
+<span class="nc" id="L196">            return;</span>
+        }
+<span class="nc" id="L198">        clearScreen();</span>
+<span class="nc" id="L199">        car.printPassengers();</span>
+<span class="nc" id="L200">        System.out.println(&quot;&quot;);</span>
+<span class="nc" id="L201">        System.out.println((car.passengers.size() + 1) + &quot;: Back to Main Menu\n&quot;);</span>
+<span class="nc" id="L202">        System.out.println(&quot;Select a passenger to remove.&quot;);</span>
+<span class="nc" id="L203">        String ans = input.nextLine();</span>
+<span class="nc" id="L204">        int p = 0;</span>
+        try{
+<span class="nc" id="L206">            p = Integer.parseInt(ans);</span>
+<span class="nc" id="L207">        }</span>
+<span class="nc" id="L208">        catch(NumberFormatException e){</span>
+<span class="nc" id="L209">            message(input, &quot;\nPlease enter a valid number.&quot;);</span>
+<span class="nc" id="L210">            InputPassengerRemove(input, car);</span>
+<span class="nc" id="L211">            return;</span>
+        }
+<span class="nc" id="L213">        System.out.println(&quot;&quot;);</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if(p == car.passengers.size() + 1){</span>
+<span class="nc" id="L215">            System.out.println(&quot;Operation canceled.&quot;);</span>
+<span class="nc" id="L216">            return;</span>
+        }
+
+<span class="nc" id="L219">        Passenger toDel = null;</span>
+        try{
+<span class="nc" id="L221">            toDel = car.passengers.get(p-1);</span>
+<span class="nc" id="L222">            car.removePassenger(toDel);</span>
+<span class="nc" id="L223">            System.out.println(&quot;Passenger &quot; + toDel.name +&quot; removed.&quot;);</span>
+<span class="nc" id="L224">        }</span>
+<span class="nc" id="L225">        catch(IndexOutOfBoundsException e){</span>
+<span class="nc" id="L226">            message(input, &quot;Please enter a valid number.&quot;);</span>
+<span class="nc" id="L227">            InputPassengerRemove(input, car);</span>
+        }
+<span class="nc" id="L229">        catch(IllegalStateException e){</span>
+<span class="nc" id="L230">            car.addPassenger(toDel);</span>
+<span class="nc" id="L231">            message(input, &quot;The current drive mode does not allow passenger removal!&quot;);</span>
+<span class="nc" id="L232">            InputPassengerRemove(input, car);</span>
+        }
+        
+<span class="nc" id="L235">    }</span>
+
+    public static boolean PassengerAlreadyExists(ArrayList&lt;Passenger&gt; passengers, String name){
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        for(Passenger p: passengers){</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            if(p.name.equals(name))</span>
+<span class="nc" id="L240">                return true;</span>
+        }
+<span class="nc" id="L242">        return false;</span>
+    }
+
+    public static void PassengerEditor(Scanner input, Car car, ArrayList&lt;Passenger&gt; passengers){
+<span class="nc" id="L246">        while(true){</span>
+<span class="nc" id="L247">            clearScreen();</span>
+<span class="nc" id="L248">            System.out.println(&quot;--- Passenger Editor ---\n1: Print passengers\n2: New passenger\n3: Delete passenger\n------------------------\n4: Back to Main Menu\n&quot;);</span>
+<span class="nc" id="L249">            String ans = input.nextLine();</span>
+<span class="nc bnc" id="L250" title="All 5 branches missed.">            switch(ans){</span>
+                case &quot;1&quot;:
+<span class="nc" id="L252">                    clearScreen();</span>
+<span class="nc" id="L253">                    printPassengers(null, passengers, false);</span>
+<span class="nc" id="L254">                    System.out.println(&quot;&quot;);</span>
+<span class="nc" id="L255">                    break;</span>
+                case &quot;2&quot;:
+<span class="nc" id="L257">                    Passenger p = new Passenger();</span>
+
+                    //Input name
+<span class="nc" id="L260">                    clearScreen();</span>
+<span class="nc" id="L261">                    System.out.print(&quot;New passenger name ('back' to undo): &quot;);</span>
+<span class="nc" id="L262">                    ans = input.nextLine();</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">                    if(ans.equals(&quot;back&quot;)){</span>
+<span class="nc" id="L264">                        System.out.println(&quot;\nOperation canceled.&quot;);</span>
+<span class="nc" id="L265">                        break;</span>
+                    }
+                    
+<span class="nc" id="L268">                    boolean br = false;</span>
+<span class="nc bnc" id="L269" title="All 4 branches missed.">                    while(PassengerAlreadyExists(passengers, ans) || ans.equals(&quot;&quot;)){</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">                        message(input, ans.equals(&quot;&quot;)? &quot;\nInvalid name!&quot;: &quot;\nPassenger &quot; + ans + &quot; already exists!&quot;);</span>
+<span class="nc" id="L271">                        clearScreen();</span>
+<span class="nc" id="L272">                        System.out.print(&quot;New passenger name ('back' to undo): &quot;);</span>
+<span class="nc" id="L273">                        ans = input.nextLine();</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">                        if(ans.equals(&quot;back&quot;)){</span>
+<span class="nc" id="L275">                            System.out.println(&quot;\nOperation canceled.&quot;);</span>
+<span class="nc" id="L276">                            br = true;</span>
+<span class="nc" id="L277">                            break;</span>
+                        }
+                    }
+<span class="nc bnc" id="L280" title="All 2 branches missed.">                    if(br) break;</span>
+<span class="nc" id="L281">                    p.name = ans;</span>
+                    
+                    //Input weight
+<span class="nc" id="L284">                    clearScreen();</span>
+<span class="nc" id="L285">                    System.out.print(&quot;New passenger name: &quot; + p.name + &quot;\nNew passenger weight ('back' to undo): &quot;);</span>
+<span class="nc" id="L286">                    ans = input.nextLine();</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">                    if(ans.equals(&quot;back&quot;)){</span>
+<span class="nc" id="L288">                        System.out.println(&quot;\nOperation canceled.&quot;);</span>
+<span class="nc" id="L289">                        break;</span>
+                    }
+
+<span class="nc" id="L292">                    br = false;</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">                    while(!ans.matches(&quot;\\d+&quot;)){</span>
+<span class="nc" id="L294">                        message(input, &quot;\nInvalid weight!&quot;);</span>
+<span class="nc" id="L295">                        clearScreen();</span>
+<span class="nc" id="L296">                        System.out.print(&quot;New passenger name: &quot; + p.name + &quot;\nNew passenger weight ('back' to undo): &quot;);</span>
+<span class="nc" id="L297">                        ans = input.nextLine();</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">                        if(ans.equals(&quot;back&quot;)){</span>
+<span class="nc" id="L299">                            System.out.println(&quot;\nOperation canceled.&quot;);</span>
+<span class="nc" id="L300">                            br = true;</span>
+<span class="nc" id="L301">                            break;</span>
+                        }
+                    }
+<span class="nc bnc" id="L304" title="All 2 branches missed.">                    if(br) break;</span>
+<span class="nc" id="L305">                    p.weight = Integer.parseInt(ans);</span>
+<span class="nc" id="L306">                    clearScreen();</span>
+<span class="nc" id="L307">                    System.out.println(&quot;New passenger name: &quot; + p.name + &quot;\nNew passenger weight: &quot; + p.weight + &quot;\n&quot;);</span>
+<span class="nc" id="L308">                    System.out.println(&quot;Passenger &quot; + p.name + &quot; created.&quot;);</span>
+
+<span class="nc" id="L310">                    passengers.add(p);</span>
+<span class="nc" id="L311">                    break;</span>
+                case &quot;3&quot;:
+<span class="nc" id="L313">                    clearScreen();</span>
+<span class="nc" id="L314">                    printPassengers(null, passengers, false);</span>
+<span class="nc" id="L315">                    System.out.println((passengers.size()+1) + &quot;: Back to Passenger Editor&quot;);</span>
+<span class="nc" id="L316">                    System.out.println(&quot;\nSelect passenger to delete.&quot;);</span>
+<span class="nc" id="L317">                    ans = input.nextLine();</span>
+<span class="nc bnc" id="L318" title="All 6 branches missed.">                    while(!ans.matches(&quot;\\d+&quot;) || Integer.parseInt(ans) &lt; 1 || Integer.parseInt(ans) &gt; passengers.size()+1){</span>
+<span class="nc" id="L319">                        message(input,&quot;\nPlease enter a valid number!&quot;);</span>
+<span class="nc" id="L320">                        clearScreen();</span>
+<span class="nc" id="L321">                        printPassengers(null, passengers, false);</span>
+<span class="nc" id="L322">                        System.out.println((passengers.size()+1) + &quot;: Back to Passenger Editor&quot;);</span>
+<span class="nc" id="L323">                        System.out.println(&quot;\nSelect passenger to delete.&quot;);</span>
+<span class="nc" id="L324">                        ans = input.nextLine();</span>
+                    }
+<span class="nc bnc" id="L326" title="All 2 branches missed.">                    if(ans.equals((passengers.size()+1) + &quot;&quot;)){</span>
+<span class="nc" id="L327">                        System.out.println(&quot;\nOperation canceled.&quot;);</span>
+<span class="nc" id="L328">                        break;</span>
+                    }
+<span class="nc" id="L330">                    Passenger toDel = passengers.get(Integer.parseInt(ans)-1);</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">                    if(car.passengers.contains(toDel)){</span>
+<span class="nc" id="L332">                        System.out.println(&quot;\nPassenger &quot; + toDel.name + &quot; is inside the car! Do you want to delete it anyway?(y/n)&quot;);</span>
+<span class="nc" id="L333">                        ans = input.nextLine();</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">                        if(ans.equals(&quot;y&quot;)){</span>
+                            try{
+<span class="nc bnc" id="L336" title="All 2 branches missed.">                                if(!car.removePassenger(toDel)){</span>
+<span class="nc" id="L337">                                    System.out.println(&quot;\nOperation failed. The car is moving.&quot;);</span>
+<span class="nc" id="L338">                                    break;</span>
+                                }
+                            }
+<span class="nc" id="L341">                            catch(IllegalStateException e){</span>
+<span class="nc" id="L342">                                System.out.println(&quot;\nOperation failed. &quot; + e.getMessage());</span>
+<span class="nc" id="L343">                                car.addPassenger(toDel);</span>
+<span class="nc" id="L344">                                break;</span>
+                            }
+
+                        }
+                        else {
+<span class="nc" id="L349">                            System.out.println(&quot;&quot;);</span>
+<span class="nc" id="L350">                            break;</span>
+                        }
+                    }
+<span class="nc" id="L353">                    passengers.remove(toDel);</span>
+<span class="nc" id="L354">                    System.out.println(&quot;\nPassenger &quot; + toDel.name + &quot; deleted.&quot;);</span>
+                    
+                    
+<span class="nc" id="L357">                    break;</span>
+                case &quot;4&quot;:
+<span class="nc" id="L359">                    System.out.println(&quot;\nExiting editor.&quot;);</span>
+<span class="nc" id="L360">                    return;</span>
+                default:
+<span class="nc" id="L362">                    System.out.println(&quot;\nUnknow option.&quot;);</span>
+                    break;
+            }
+<span class="nc" id="L365">            System.out.println(&quot;Press ENTER to continue.&quot;);</span>
+<span class="nc" id="L366">            input.nextLine();</span>
+        }
+    }
+    
+    public static void inputDriveMode(Scanner input, Car car, ArrayList&lt;String&gt; descriptions){
+<span class="nc" id="L371">        clearScreen();</span>
+<span class="nc" id="L372">        String s = &quot;------ Drive modes ------&quot;;</span>
+<span class="nc" id="L373">        int i = 0;</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">        for(; i &lt; DriveModeEnum.values().length; i++){</span>
+<span class="nc" id="L375">            s += &quot;\n&quot; + (i+1) + &quot;: &quot; + DriveModeEnum.values()[i].toString() + &quot; - &quot; + descriptions.get(i);</span>
+        }
+<span class="nc" id="L377">        s += &quot;\n-------------------------\n&quot; + (i+1) + &quot;: Back to Main Menu\n\nSelect a drive mode.&quot;;</span>
+<span class="nc" id="L378">        System.out.println(s);</span>
+<span class="nc" id="L379">        String ans = input.nextLine();</span>
+<span class="nc" id="L380">        int d = 0;</span>
+        try{
+<span class="nc" id="L382">            d = Integer.parseInt(ans);</span>
+<span class="nc" id="L383">        }</span>
+<span class="nc" id="L384">        catch(NumberFormatException e){</span>
+<span class="nc" id="L385">            message(input,&quot;\nPlease enter a valid number.&quot;);</span>
+<span class="nc" id="L386">            inputDriveMode(input, car, descriptions);</span>
+<span class="nc" id="L387">            return;</span>
+        }
+<span class="nc" id="L389">        System.out.println(&quot;&quot;);</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">        if(d == DriveModeEnum.values().length+1) {</span>
+<span class="nc" id="L391">            System.out.println(&quot;Operation canceled.&quot;);</span>
+<span class="nc" id="L392">            return;</span>
+        }
+        int o;
+        try{
+<span class="nc" id="L396">            o = car.setMode(DriveModeEnum.values()[d - 1]);</span>
+<span class="nc" id="L397">        }</span>
+<span class="nc" id="L398">        catch(ArrayIndexOutOfBoundsException e){</span>
+<span class="nc" id="L399">            message(input, &quot;Please enter a valid number.&quot;);</span>
+<span class="nc" id="L400">            inputDriveMode(input, car, descriptions);</span>
+<span class="nc" id="L401">            return;</span>
+        }
+<span class="nc bnc" id="L403" title="All 4 branches missed.">        switch(o){</span>
+            case 0:
+<span class="nc" id="L405">                System.out.println(&quot;Driving Mode set to &quot; + DriveModeEnum.values()[d - 1].name() + &quot;.&quot;);</span>
+<span class="nc" id="L406">                break;</span>
+            case -1:
+<span class="nc" id="L408">                System.out.println(&quot;The selected drive mode is illegal for the current state&quot;);</span>
+<span class="nc" id="L409">                break;</span>
+            case -2:
+<span class="nc" id="L411">                message(input, &quot;Please enter a valid number.&quot;);</span>
+<span class="nc" id="L412">                inputDriveMode(input, car, descriptions);</span>
+                break;
+        }
+
+
+<span class="nc" id="L417">    }</span>
+
+    public static void InputAccelerate(Scanner input, Car car){
+<span class="nc" id="L420">        int ca = car.canAccelerate();</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">        if(ca == -1){</span>
+<span class="nc" id="L422">            System.out.println(&quot;Cannot accelerate: engine is off!&quot;);</span>
+<span class="nc" id="L423">            return;</span>
+        }
+<span class="nc bnc" id="L425" title="All 2 branches missed.">        else if(ca == -2){</span>
+<span class="nc" id="L426">            System.out.println(&quot;Cannot accelerate: there are no passengers!&quot;);</span>
+<span class="nc" id="L427">            return;</span>
+        }
+<span class="nc" id="L429">        clearScreen();</span>
+<span class="nc" id="L430">        System.out.println(&quot;Choose an amount of acceleration. (max: 100.0)&quot;);</span>
+<span class="nc" id="L431">        String ans = input.nextLine();</span>
+        double a;
+        try{
+<span class="nc" id="L434">            a = Double.parseDouble(ans)/100;</span>
+<span class="nc" id="L435">        }</span>
+<span class="nc" id="L436">        catch(NumberFormatException e){</span>
+<span class="nc" id="L437">            message(input, &quot;\nPlease insert a valid number!&quot;);</span>
+<span class="nc" id="L438">            InputAccelerate(input, car);</span>
+<span class="nc" id="L439">            return;</span>
+        }
+<span class="nc" id="L441">        DriveMode oldmode = car.mode;</span>
+<span class="nc" id="L442">        a = car.accelerate(a);</span>
+<span class="nc bnc" id="L443" title="All 2 branches missed.">        if(car.mode != oldmode){</span>
+<span class="nc" id="L444">            System.out.print(&quot;\nSwitching to Electric mode...&quot;);</span>
+        }
+<span class="nc bnc" id="L446" title="All 2 branches missed.">        if(car.speed == car.mode.maxSpeed){</span>
+<span class="nc" id="L447">            System.out.print(&quot;\nMax speed reached!&quot;);</span>
+        }
+<span class="nc bnc" id="L449" title="All 2 branches missed.">        if(car.fuel == 0d){</span>
+<span class="nc" id="L450">            System.out.print(&quot;\nYou are out of fuel! Turning engine off...&quot;);</span>
+        }
+<span class="nc" id="L452">        System.out.println(&quot;\nAcceleration: &quot; + formatDouble(a, 5) +&quot; Km/h. Current speed: &quot; + formatDouble(car.speed, 5) + &quot; Km/h.&quot;);</span>
+<span class="nc" id="L453">    }</span>
+
+    public static void GasStation(Scanner input, Car car){
+<span class="nc bnc" id="L456" title="All 2 branches missed.">        if(car.speed != 0){</span>
+<span class="nc" id="L457">            System.out.println(&quot;Cannot refuel/charge while the car is moving!&quot;);</span>
+<span class="nc" id="L458">            return;</span>
+        }
+<span class="nc" id="L460">        clearScreen();</span>
+<span class="nc" id="L461">        System.out.println(&quot;--- Gas Station ---\n1: Refuel\n2: Charge battery\n-------------------\n3: Back to Main Menu\n\nSelect an option.&quot;);</span>
+<span class="nc" id="L462">        String ans = input.nextLine();</span>
+<span class="nc" id="L463">        int o = 0;</span>
+        try{
+<span class="nc" id="L465">            o = Integer.parseInt(ans);</span>
+<span class="nc" id="L466">        }</span>
+<span class="nc" id="L467">        catch(NumberFormatException e){</span>
+<span class="nc" id="L468">            message(input,&quot;\nPlease enter a valid number.&quot;);</span>
+<span class="nc" id="L469">            GasStation(input, car);</span>
+<span class="nc" id="L470">            return;</span>
+        }
+<span class="nc bnc" id="L472" title="All 2 branches missed.">        if(o == 3){</span>
+<span class="nc" id="L473">            System.out.println(&quot;\nLeaving gas station...&quot;);</span>
+<span class="nc" id="L474">            return;</span>
+        }
+<span class="nc bnc" id="L476" title="All 4 branches missed.">        if(o != 1 &amp;&amp; o != 2){</span>
+<span class="nc" id="L477">            message(input,&quot;\nPlease enter a valid number.&quot;);</span>
+<span class="nc" id="L478">            GasStation(input, car);</span>
+<span class="nc" id="L479">            return;</span>
+        }
+<span class="nc bnc" id="L481" title="All 2 branches missed.">        if(o == 1){</span>
+<span class="nc" id="L482">            car.refuel();</span>
+<span class="nc" id="L483">            message(input, &quot;\nGas tank filled up.&quot;);</span>
+<span class="nc" id="L484">            GasStation(input, car);</span>
+<span class="nc" id="L485">        }</span>
+        else{
+<span class="nc" id="L487">            car.charge();</span>
+<span class="nc" id="L488">            message(input, &quot;\nBattery charged.&quot;);</span>
+<span class="nc" id="L489">            GasStation(input, car);</span>
+        }
+
+<span class="nc" id="L492">    }</span>
+
+    public static void message(Scanner input, String msg){
+<span class="nc" id="L495">        System.out.println(msg + &quot; \nPress ENTER to continue.\n&quot;);</span>
+<span class="nc" id="L496">        input.nextLine();</span>
+<span class="nc" id="L497">    }</span>
+}
+    
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

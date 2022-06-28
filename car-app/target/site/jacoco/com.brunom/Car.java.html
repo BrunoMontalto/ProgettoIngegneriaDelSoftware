@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Car.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">car-app</a> &gt; <a href="index.source.html" class="el_package">com.brunom</a> &gt; <span class="el_source">Car.java</span></div><h1>Car.java</h1><pre class="source lang-java linenums">package com.brunom;
+import java.util.ArrayList;
+
+/**
+ * Represents a car with different driving modes, 4 seats, a gas tank and a battery and an engine that can be turned on or off.
+ * @see DriveMode
+ * @see Passenger
+ * @author brunom
+ */
+public class Car {
+<span class="fc" id="L11">    private static Car car = null;</span>
+    /**
+     * Represents if the engine is on or off.
+     */
+<span class="fc" id="L15">    public boolean engine = false;</span>
+
+<span class="fc" id="L17">    public double speed = 0;</span>
+    public DriveMode mode;
+
+<span class="fc" id="L20">    public double fuel = 100d;</span>
+<span class="fc" id="L21">    public double battery = 100d;</span>
+    
+<span class="fc" id="L23">    public ArrayList&lt;Passenger&gt; passengers = new ArrayList&lt;Passenger&gt;();</span>
+    /**
+     * The maximum number of passengers.
+     */
+<span class="fc" id="L27">    public final int seats = 4;</span>
+<span class="fc" id="L28">    public final int weight = 900;</span>
+    
+<span class="fc" id="L30">    private Car(){</span>
+<span class="fc" id="L31">        mode = new ComfortableMode(this);</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * Creates the Car instance if it does not already exist and returns it.
+     * @return the Car instance
+     */
+    public static Car getInstance(){
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if(car == null){</span>
+<span class="fc" id="L40">            car = new Car();</span>
+        }
+<span class="fc" id="L42">        return car;</span>
+    }
+
+    /**
+     * Sets the car Instace to null.
+     */
+    public static void deleteInstance(){
+<span class="fc" id="L49">        car = null;</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Resets speed, passengers, engine, fuel, battery and mode of the car.
+     */
+    public void resetState(){
+<span class="fc" id="L56">        speed = 0;</span>
+<span class="fc" id="L57">        passengers.clear();</span>
+<span class="fc" id="L58">        fuel = 100d;</span>
+<span class="fc" id="L59">        battery = 100d;</span>
+<span class="fc" id="L60">        engine = false;</span>
+<span class="fc" id="L61">        mode = new ComfortableMode(this);</span>
+<span class="fc" id="L62">    }</span>
+
+    /**
+     * If the car is not moving, toggles the state of the engine(on/off).
+     * @return 0 if the engine has been toogled successfully, -1 if there are no passengers, -2 if there is no fuel.
+     */
+    public int toggleEngine(){
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if(passengers.size() == 0)</span>
+<span class="fc" id="L70">            return -1;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if(fuel == 0d)</span>
+<span class="fc" id="L72">            return -2;</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        engine = !engine;</span>
+<span class="fc" id="L74">        return 0;</span>
+    }
+
+    /**
+     * Returns the weight of the car considering the passengers inside.
+     * @return the weight of the car considering the passengers inside.
+     */
+    public int getTotalWeight(){
+<span class="fc" id="L82">        int tWeight = 0;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for(Passenger p: passengers){</span>
+<span class="fc" id="L84">            tWeight += p.weight;</span>
+        }
+<span class="fc" id="L86">        return tWeight + weight;</span>
+    }
+
+    /**
+     * Setter for mode.
+     * @param mode the desired drive mode.
+     * @return 0 if the mode has been changed successfully, -1 if the selected mode is illegal for the current car state.
+     */
+    public int setMode(DriveModeEnum mode){
+<span class="fc" id="L95">        DriveMode oldMode = this.mode;</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if(mode == DriveModeEnum.Sport){</span>
+<span class="fc" id="L97">            car.mode = new SportMode(car);</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">            if(!car.mode.isLegal()){</span>
+<span class="fc" id="L99">                this.mode = oldMode;</span>
+<span class="fc" id="L100">                return -1;</span>
+            }
+<span class="fc" id="L102">            return 0;</span>
+        }
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if(mode == DriveModeEnum.Comfortable){</span>
+<span class="fc" id="L105">            car.mode = new ComfortableMode(car);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            if(!car.mode.isLegal()){</span>
+<span class="fc" id="L107">                this.mode = oldMode;</span>
+<span class="fc" id="L108">                return -1;</span>
+            }
+<span class="fc" id="L110">            return 0;</span>
+        }
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if(mode == DriveModeEnum.Electric){</span>
+<span class="fc" id="L113">            car.mode = new ElectricMode(car);</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            if(!car.mode.isLegal()){</span>
+<span class="fc" id="L115">                this.mode = oldMode;</span>
+<span class="fc" id="L116">                return -1;</span>
+            }
+<span class="fc" id="L118">            return 0;</span>
+        }
+
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">        if(mode == DriveModeEnum.Normal){</span>
+<span class="fc" id="L122">            car.mode = new NormalMode(car);</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            if(!car.mode.isLegal()){</span>
+<span class="fc" id="L124">                this.mode = oldMode;</span>
+<span class="fc" id="L125">                return -1;</span>
+            }
+<span class="fc" id="L127">            return 0;</span>
+        }
+<span class="nc" id="L129">        return -1; //UNREACHABLE CODE</span>
+    }
+    
+    /**
+     * Determines if the car can accelerate.
+     * @return 0 if the car can accelerate, -1 if the engine is off, -2 if there are no passenger.
+     */
+    public int canAccelerate(){
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        if(!engine)</span>
+<span class="fc" id="L138">            return -1;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        if(passengers.size() == 0)</span>
+<span class="fc" id="L140">            return -2;</span>
+<span class="fc" id="L141">        return 0;</span>
+    }
+    
+    /**
+     * Increases the car speed by a certain amount if the engine is on(depending on the number of passengers and their weight).
+     * 
+     * @param amount the amount of acceleration(from 0.0 to 1.0).
+     * @return the acceleration after considering the weight of the passengers if the acceleration is successful, -1 if the engine is off, -2 if there are no passengers.
+     */
+    public double accelerate(double amount){
+<span class="fc" id="L151">        int ca = canAccelerate();</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        if(ca != 0)</span>
+<span class="fc" id="L153">            return ca;</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">        if(amount &lt; 0) amount = 0;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if(amount &gt; 1) amount = 1;</span>
+<span class="fc" id="L156">        double oldSpeed = car.speed;</span>
+<span class="fc" id="L157">        int w = getTotalWeight();</span>
+<span class="fc" id="L158">        double acceleration = (car.mode.force/w);</span>
+<span class="fc" id="L159">        mode.accelerate(acceleration, amount);</span>
+<span class="fc" id="L160">        return car.speed - oldSpeed;</span>
+    }
+    
+    /**
+     * Reduces the speed of the car. The brake is regenerative.
+     */
+    public void brake(){
+<span class="fc" id="L167">        double oldSpeed = car.speed;</span>
+<span class="fc" id="L168">        car.speed /= 1.3;</span>
+<span class="fc" id="L169">        car.speed -= 1d;</span>
+<span class="fc" id="L170">        car.speed = Math.max(0d, car.speed);</span>
+<span class="fc" id="L171">        car.battery = Math.min(100d, car.battery + (oldSpeed - car.speed)/100d);</span>
+<span class="fc" id="L172">    }</span>
+
+    /**
+     * Determines whether the car is full or not.
+     * @return a boolean representing whether the car is full or not.
+     */
+    public boolean isFull(){
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        return passengers.size() &gt;= seats;</span>
+    }
+
+    /**
+      * Adds a passenger to the passengers list.
+      *  
+      * @param passenger the passenger to add.
+      * @return 0 if the passenger has been added successfully, -1 if all the car seats are occupied, -2 if the car is moving, -3 if the passenger is already in the car.
+      * @throws IllegalStateException if the current mode does not allow new passengers. The passenger will be added anyway.
+      */
+    public int addPassenger(Passenger passenger){
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        if(isFull())</span>
+<span class="fc" id="L191">            return -1;</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        if(speed != 0)</span>
+<span class="fc" id="L193">            return -2;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        if(passengers.contains(passenger))</span>
+<span class="fc" id="L195">            return -3;</span>
+<span class="fc" id="L196">        passengers.add(passenger);</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if(!mode.isLegal())</span>
+<span class="fc" id="L198">            throw new IllegalStateException(&quot;The current drive mode does not allow new passengers!&quot;);</span>
+<span class="fc" id="L199">        return 0;</span>
+
+    }
+
+    /**
+     * Removes the passenger at the selected index if the car is not moving.
+     * 
+     * @param index the index of the passenger to remove.
+     * @return the removed passenger if the operation was sucessful, else null (if the car is moving).
+     * @throws IndexOutOfBoundsException if the selected index is out of range (index &gt;= passengers.size() || index &lt; 0)
+     * @throws IllegalStateException if the current drive mode does not allow passengers removal.
+     */
+    public Passenger removePassenger(int index){
+<span class="fc bfc" id="L212" title="All 4 branches covered.">        if(index &gt;= passengers.size() || index &lt; 0)</span>
+<span class="fc" id="L213">            throw new IndexOutOfBoundsException(&quot;Passenger with index &quot; + index + &quot; does not exsist.&quot;);</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        if(speed != 0)</span>
+<span class="fc" id="L215">            return null;</span>
+<span class="fc" id="L216">        Passenger p = passengers.remove(index);</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        if(!mode.isLegal())</span>
+<span class="fc" id="L218">            throw new IllegalStateException(&quot;The current drive mode does not allow passengers removal!&quot;);</span>
+<span class="fc" id="L219">        return p;</span>
+    }
+
+
+    /**
+     * Removes a passenger if the car is not moving.
+     * 
+     * @param p the passenger to remove.
+     * @return a boolean representing whether the operation was successful or not.
+     * @throws IllegalStateException if the current drive mode does not allow passengers removal.
+     */
+    public boolean removePassenger(Passenger p){
+<span class="fc bfc" id="L231" title="All 2 branches covered.">        if(speed != 0)</span>
+<span class="fc" id="L232">            return false;</span>
+<span class="fc" id="L233">        boolean b = passengers.remove(p);</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">        if(!mode.isLegal())</span>
+<span class="fc" id="L235">            throw new IllegalStateException(&quot;The current drive mode does not allow passengers removal!&quot;);</span>
+<span class="fc" id="L236">        return b;</span>
+    }
+
+    /**
+     * If the car is not moving, fills up the gas tank.
+     * @return a boolean representing whether the operation was successful or not.
+     */
+    public boolean refuel(){
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        if(car.speed != 0) return false;</span>
+<span class="fc" id="L245">        fuel = 100d;</span>
+<span class="fc" id="L246">        return true;</span>
+    }
+
+    /**
+     * If the car is not moving, charges the battery.
+     * @return a boolean representing whether the operation was successful or not.
+     */
+    public boolean charge(){
+<span class="fc bfc" id="L254" title="All 2 branches covered.">        if(car.speed != 0) return false;</span>
+<span class="fc" id="L255">        battery = 100d;</span>
+<span class="fc" id="L256">        return true;</span>
+    }
+
+    /**
+     * Prints the name and the weight of all the passengers inside the car.
+     */
+    public void printPassengers(){
+<span class="fc" id="L263">        String out = &quot;&quot;;</span>
+<span class="fc" id="L264">        out += &quot;--- Passengers inside(&quot; + passengers.size() +&quot;) ---\n&quot;;</span>
+<span class="fc" id="L265">        int len = out.length()-1;</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">        if(passengers.size() == 0){</span>
+<span class="fc" id="L267">            out += &quot;Empty\n&quot;;</span>
+<span class="fc" id="L268">        }</span>
+        else{
+<span class="fc bfc" id="L270" title="All 2 branches covered.">            for(int i = 0; i &lt; passengers.size(); i++){</span>
+<span class="fc" id="L271">                out += (i + 1) + &quot;: &quot; + passengers.get(i).name + &quot;, &quot; + passengers.get(i).weight + &quot; Kg\n&quot;; </span>
+            }
+        }
+<span class="fc bfc" id="L274" title="All 2 branches covered.">        for(int i = 0; i &lt; len; i++){</span>
+<span class="fc" id="L275">            out += &quot;-&quot;;</span>
+        }
+<span class="fc" id="L277">        System.out.print(out);</span>
+<span class="fc" id="L278">    }</span>
+
+    /**
+     * Prints the current state of the car: engine, speed, drive mode, passengers.
+     */
+    public void printState(){
+        /**
+         * Prints the current state of the car (engine, speed, mode, fuel, charge, passengers)
+         */
+
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        String out = &quot;Engine: &quot; + (engine? &quot;On&quot; : &quot;Off&quot;) + &quot; | &quot; + &quot;Speed: &quot; + SimulationManager.formatDouble(speed, 5) + &quot; Km/h | Drive Mode: &quot; + mode.getClass().getSimpleName().replace(&quot;Mode&quot;,&quot;&quot;) + &quot; | Fuel: &quot; + SimulationManager.formatDouble(fuel, 5) + &quot;% | Battery: &quot; + SimulationManager.formatDouble(battery, 5) + &quot;%\n&quot;;</span>
+        
+<span class="fc" id="L290">        System.out.println(out);</span>
+<span class="fc" id="L291">        printPassengers();</span>
+<span class="fc" id="L292">        System.out.println(&quot;\n&quot;);</span>
+<span class="fc" id="L293">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
